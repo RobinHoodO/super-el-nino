@@ -1,0 +1,1 @@
+CREATE UNIQUE INDEX `membership_unique` ON `memberships` (`community_id`,`user_id`);
