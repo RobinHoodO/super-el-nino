@@ -73,3 +73,8 @@ import {POST as workWrite} from '../app/api/work/route';
 assert.equal((await workWrite(new Request('https://example.test/api/work',{method:'POST',headers:auth,body:JSON.stringify({operation:'create'})}))).status,403);
 assert.equal((await workWrite(new Request('https://example.test/api/work',{method:'POST'}))).status,401);
 console.log('Passed: open work collaboration, links and cycles, private subscriptions, todo assignment and project following, archive permissions, identity privacy and route protection.');
+const gps={label:'Public distribution point',latitude:59.9134567,longitude:10.7523456,precision:'exact',publish_exact:true};
+await assert.rejects(()=>create(owner.id,{...base,map_location:{...gps,publish_exact:false}}));
+const exactPin=await create(owner.id,{...base,map_location:gps});let exactRows=(await (await mapRead()).json() as {entries:Record<string,unknown>[]}).entries;assert.equal(exactRows.find(r=>r.id===exactPin.id)!.latitude,gps.latitude);assert.equal(exactRows.find(r=>r.id===exactPin.id)!.precision,'exact');
+const approximatePin=await create(owner.id,{...base,map_location:{...gps,precision:'area',publish_exact:false}});exactRows=(await (await mapRead()).json() as {entries:Record<string,unknown>[]}).entries;assert.equal(exactRows.find(r=>r.id===approximatePin.id)!.latitude,59.91);
+console.log('Passed: exact GPS preservation, explicit publication choice and approximate pin rounding.');
