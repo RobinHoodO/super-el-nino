@@ -44,3 +44,14 @@ const result=await response.json() as {result:{content:{text:string}[]}};assert.
 const unauthorized=await mcp(new Request('https://example.test/mcp',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({jsonrpc:'2.0',id:2,method:'tools/call',params:{name:'admin_review_queue',arguments:{}}})}));assert.equal(unauthorized.status,401);
 const csrf=await apiWrite(new Request('https://example.test/api/coordination',{method:'POST',headers:{...auth,Origin:'https://different.test'},body:JSON.stringify({operation:'manage_admin',email:'bad@example.test',action:'add'})}));assert.equal(csrf.status,403);
 console.log('Passed: MCP rejects hidden-entry filter injection, unauthenticated calls and cross-origin mutations.');
+import {GET as mapRead} from '../app/api/map/route';
+import {findPlaces} from '../lib/geography';
+const oslo=findPlaces('Oslo, Norway').find(p=>p.label==='Oslo, Norway')!;assert.ok(oslo);
+const pin=await create(owner.id,{...base,title:'Mapped private-contact offer',location:'Oslo, Norway',place_id:oslo.id,location_scope:'place'});
+let mapRows=(await (await mapRead()).json() as {entries:Record<string,unknown>[]}).entries;
+let mapped=mapRows.find(e=>e.id===pin.id)!;assert.equal(mapped.longitude,10.74609);assert.equal(mapped.latitude,59.91273);assert.equal(mapped.contact,undefined);assert.equal(mapped.owner_id,undefined);assert.ok(!mapRows.some(e=>e.id===offer.id));
+await change(owner.id,pin.id,'edit',{...base,title:'Mapped private-contact offer',location:'Oslo, Norway'});assert.equal((await list(owner.id,{entry_id:pin.id}))[0].place_id,oslo.id);
+await change(owner.id,pin.id,'edit',{...base,location:'Global',location_scope:'global'});mapRows=(await (await mapRead()).json() as {entries:Record<string,unknown>[]}).entries;assert.equal(mapRows.find(e=>e.id===pin.id)!.latitude,null);
+await assert.rejects(()=>create(owner.id,{...base,place_id:'geonames:fake',location_scope:'place'}));await assert.rejects(()=>create(owner.id,{...base,map_location:{label:'Test',latitude:500,longitude:0}}));
+await change(owner.id,pin.id,'delete',{});mapRows=(await (await mapRead()).json() as {entries:Record<string,unknown>[]}).entries;assert.ok(!mapRows.some(e=>e.id===pin.id));
+console.log('Passed: map coordinates, private-field exclusion, moderation, location preservation, global scope, invalid pins and deletion.');
