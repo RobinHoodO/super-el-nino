@@ -727,13 +727,36 @@ pre.tree{background:var(--surface);border:1px solid var(--line);border-radius:6p
       <tr><td>WhatsApp voice notes</td><td>People who prefer speaking or read little</td><td>Same bot + speech-to-text, human check for warnings</td><td>Medium</td></tr>
       <tr><td>Web form</td><td>Anyone without AI or WhatsApp</td><td>Simple form into the same index</td><td>Very low</td></tr>
       <tr><td>Off-grid radio</td><td>Areas with no phone network</td><td>Meshtastic (see Burners)</td><td>High, later</td></tr>
+      <tr><td>Task tools</td><td>Groups that plan in Trello, Asana, Notion, sheets</td><td>Task adapter (below)</td><td>Low per tool</td></tr>
     </tbody>
   </table></div>
   <p class="note">Order: by-hand test first, then MCP server, then ChatGPT and Claude doors (cheap), then WhatsApp (reaches the most local people, costs more).</p>
 
-  <h3>A shared GitHub repository: <code>el-nino</code></h3>
-  <p>Next step: set it up together with Artem, so the group can build in the open. A minimal start:</p>
-<pre class="tree">el-nino/
+  <h3>Idea: a task adapter</h3>
+  <p>Every group already has its own to-do tool. Nobody will move to ours. So the system syncs tasks into the tools people already use.</p>
+  <div class="callout">
+    <p><b>Example:</b> a workshop agrees "Caritas Malawi orders seed when rain is below X, by 15 Oct". That action becomes one task card. The adapter puts it in Caritas's Trello, the district's spreadsheet and our GitHub board. When someone ticks it off anywhere, every copy updates.</p>
+  </div>
+  <ul class="tight">
+    <li><b>One task card format:</b> title, owner, due date, status, trigger, funding source, place (district level), link back to the need or offer card and the source meeting.</li>
+    <li><b>One small adapter per tool, four functions:</b> <code>pull</code> (read tasks), <code>push</code> (create or update), <code>map_status</code> (their "Done" = our "done"), <code>on_change</code> (webhook when something changes).</li>
+    <li><b>Clear rule for conflicts:</b> each field has one home. Status lives with the task owner's tool; trigger and funding live in our index. No silent overwrites.</li>
+    <li><b>Same MCP server:</b> add <code>list_tasks</code>, <code>create_task</code>, <code>update_task</code>, so AI assistants can read and update tasks too, always with the person confirming.</li>
+  </ul>
+  <div class="tbl"><table>
+    <thead><tr><th>Tools to connect</th><th>How</th><th>Effort</th></tr></thead>
+    <tbody>
+      <tr><td>GitHub Issues (our hub)</td><td>GitHub API; the <code>super-el-nino</code> repo already exists</td><td>Very low</td></tr>
+      <tr><td>Google Sheets, Airtable</td><td>APIs; most local groups track work in spreadsheets (Mutual Aid LA did)</td><td>Low</td></tr>
+      <tr><td>Trello, Asana, Notion, Linear, Jira, ClickUp, Todoist</td><td>Existing connectors first (n8n, Make, Zapier, Composio, MCP servers). Write our own adapter only where none exist.</td><td>Low–medium</td></tr>
+      <tr><td>WhatsApp</td><td>The WhatsApp bot sends task reminders and takes "done" replies</td><td>Medium</td></tr>
+    </tbody>
+  </table></div>
+  <p class="note">Risks: duplicate tasks and sync loops (every task carries one ID across tools), wrong permissions, personal data in task text. Start with two tools only: GitHub Issues plus one spreadsheet. Add more when a real group asks.</p>
+
+  <h3>A shared GitHub repository: <code>super-el-nino</code></h3>
+  <p>Created (private for now) and connected to Vercel: every push updates <a href="https://super-el-nino.vercel.app">super-el-nino.vercel.app</a>. Next: invite Artem and build in the open. Suggested layout as it grows:</p>
+<pre class="tree">super-el-nino/
   README.md          what, why, how to join
   docs/              this overview, research notes
   schema/            need and offer card formats (Open Referral based)
@@ -743,6 +766,7 @@ pre.tree{background:var(--surface);border:1px solid var(--line);border-radius:6p
     chatgpt/
     claude/
     whatsapp/
+  adapters/          task sync: github, sheets, trello, ...
   LICENSE            Apache-2.0 for code, CC-BY for data
   SECURITY.md        how to report problems; data rules</pre>
   <p class="note">Start with only README, docs and schema. Add folders when there is code to put in them.</p>
