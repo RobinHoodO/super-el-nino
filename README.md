@@ -7,8 +7,8 @@ Research and tools for the Super El Niño Response group (SENRI): supporting com
 | `src/page.html` | **El Niño 2026–27 Watch**, the research overview (source) |
 | `site/index.html` | Built page, deployed to https://super-el-nino.vercel.app on every push to `main` |
 | `build.sh` | Builds `site/index.html` from `src/page.html` |
-| `middleware.js` | Password gate for the site (password = Vercel env var `SITE_PASSWORD`). `/privacy`, `/support`, `/terms` stay public. |
-| `tools/build_meetings.py` | Renders meeting transcripts into the Meetings section |
+| `middleware.js` | Password-only form in front of `/meetings` (password = Vercel env var `SITE_PASSWORD`). Everything else is public. |
+| `tools/build_meetings.py` | Renders meeting summaries into `src/page.html` and full transcripts into `src/meetings.html` |
 | `research/el-nino-research-plan.txt` | The group's El Niño Research Plan (full text; `.rtf` original alongside) |
 | `research/deep-research-prompt.md` | Prompt for deep research tools |
 | `resources.md` | Links shared in the group, sorted by topic |

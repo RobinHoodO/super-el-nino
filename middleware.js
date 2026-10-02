@@ -1,12 +1,15 @@
-// Password gate for the whole site (Vercel Routing Middleware, free on any plan).
-// Any username works; the password is the SITE_PASSWORD env var in Vercel.
-// Only the exact policy pages below stay public (plugin directories need them).
-const PUBLIC = new Set([
-  '/privacy', '/privacy/', '/privacy/index.html',
-  '/support', '/support/', '/support/index.html',
-  '/terms', '/terms/', '/terms/index.html',
-  '/legal.css',
-]);
+// Password gate for /meetings only (Vercel Routing Middleware, free on any plan).
+// Password-only form, no username. A valid login sets an HttpOnly cookie for /meetings.
+// The password is the SITE_PASSWORD env var in Vercel; changing it logs everyone out.
+export const config = { matcher: ['/meetings', '/meetings/:path*'] };
+
+const COOKIE = 'senri_meetings';
+
+async function token(pw) {
+  const bytes = new TextEncoder().encode('senri-meetings:' + pw);
+  const hash = await crypto.subtle.digest('SHA-256', bytes);
+  return [...new Uint8Array(hash)].map((b) => b.toString(16).padStart(2, '0')).join('');
+}
 
 // Constant-time string compare (Edge runtime has no crypto.timingSafeEqual).
 function safeEqual(a, b) {
@@ -17,17 +20,60 @@ function safeEqual(a, b) {
   return diff === 0;
 }
 
-export default function middleware(request) {
-  if (PUBLIC.has(new URL(request.url).pathname)) return;
-  const expected = process.env.SITE_PASSWORD;
-  const [scheme, encoded] = (request.headers.get('authorization') || '').split(' ');
-  if (expected && scheme === 'Basic' && encoded) {
-    let decoded = '';
-    try { decoded = atob(encoded); } catch { /* malformed header: fall through to 401 */ }
-    if (safeEqual(decoded.slice(decoded.indexOf(':') + 1), expected)) return;
-  }
-  return new Response('Password required', {
+function cookieValue(request) {
+  const m = (request.headers.get('cookie') || '').match(new RegExp(`(?:^|;\\s*)${COOKIE}=([a-f0-9]+)`));
+  return m ? m[1] : '';
+}
+
+function loginPage(wrong) {
+  const body = `<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex">
+<title>Meetings · Super El Niño</title>
+<style>
+:root{--bg:#f6f8f9;--fg:#14232b;--muted:#56666f;--line:#d8e0e4;--accent:#d2491f;--surface:#fff}
+@media (prefers-color-scheme:dark){:root{--bg:#0e171c;--fg:#e4ecef;--muted:#9aabb3;--line:#2a3a43;--accent:#ff7a4d;--surface:#15222a;color-scheme:dark}}
+body{margin:0;min-height:100vh;display:grid;place-items:center;background:var(--bg);color:var(--fg);font:16px/1.5 system-ui,sans-serif;padding:16px}
+form{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:1.5rem;width:100%;max-width:22rem;display:grid;gap:.75rem}
+h1{font-size:1.2rem;margin:0} p{margin:0;color:var(--muted);font-size:.9rem}
+input{font:inherit;padding:.6rem .7rem;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--fg)}
+button{font:inherit;font-weight:600;padding:.6rem;border:0;border-radius:6px;background:var(--accent);color:#fff;cursor:pointer}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px} .err{color:var(--accent)} a{color:var(--muted)}
+</style></head><body>
+<form method="post" action="/meetings/login">
+<h1>Meeting transcripts</h1>
+<p>Private to the Super El Niño Response group.</p>
+${wrong ? '<p class="err" role="alert">Wrong password. Try again.</p>' : ''}
+<label for="password">Password</label>
+<input id="password" name="password" type="password" autocomplete="current-password" required autofocus>
+<button type="submit">Open transcripts</button>
+<p><a href="/">← Back to the overview</a></p>
+</form></body></html>`;
+  return new Response(body, {
     status: 401,
-    headers: { 'WWW-Authenticate': 'Basic realm="Super El Nino", charset="UTF-8"' },
+    headers: { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'no-store' },
   });
+}
+
+export default async function middleware(request) {
+  const expected = process.env.SITE_PASSWORD;
+  if (!expected) return loginPage(false); // fail closed if the env var is missing
+  const url = new URL(request.url);
+  const good = await token(expected);
+
+  if (url.pathname === '/meetings/login') {
+    if (request.method !== 'POST') return Response.redirect(new URL('/meetings/', url), 303);
+    const form = await request.formData().catch(() => null);
+    const pw = String(form?.get('password') || '');
+    if (!safeEqual(pw, expected)) return Response.redirect(new URL('/meetings/?wrong=1', url), 303);
+    return new Response(null, {
+      status: 303,
+      headers: {
+        location: '/meetings/',
+        'set-cookie': `${COOKIE}=${good}; Path=/meetings; HttpOnly; Secure; SameSite=Lax; Max-Age=2592000`,
+      },
+    });
+  }
+
+  if (safeEqual(cookieValue(request), good)) return; // logged in: serve the page
+  return loginPage(url.searchParams.has('wrong'));
 }
