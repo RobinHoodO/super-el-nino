@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "super-el-nino",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Community coordination for people preparing for, responding to, and recovering from El Niño impacts.",
   "author": {
     "name": "Thrivbe",
@@ -29,9 +29,9 @@
           "Manage your own contributions"
         ],
         "websiteURL": "https://super-el-nino.vibethrivbe.chatgpt.site/",
-        "supportURL": "https://super-el-nino.vercel.app/support/",
-        "privacyPolicyURL": "https://super-el-nino.vercel.app/privacy/",
-        "termsOfServiceURL": "https://super-el-nino.vercel.app/terms/",
+        "supportURL": "https://www.thrivbe.com/",
+        "privacyPolicyURL": "https://www.thrivbe.com/termsandconditionsprivacy",
+        "termsOfServiceURL": "https://www.thrivbe.com/termsandconditionsprivacy",
         "defaultPrompt": [
           "Find community support, resources, and preparation plans near me.",
           "Help me share an offer of skills, time, or supplies for El Niño preparation.",
