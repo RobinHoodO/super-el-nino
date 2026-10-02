@@ -1,0 +1,45 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "super-el-nino",
+  "version": "1.0.0",
+  "description": "Community coordination for people preparing for, responding to, and recovering from El Niño impacts.",
+  "author": {
+    "name": "Thrivbe",
+    "url": "https://github.com/RobinHoodO/super-el-nino"
+  },
+  "homepage": "https://super-el-nino.vibethrivbe.chatgpt.site/",
+  "repository": "https://github.com/RobinHoodO/super-el-nino",
+  "keywords": [
+    "el-nino",
+    "community",
+    "preparedness",
+    "mutual-aid"
+  ],
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "Super El Nino",
+        "shortDescription": "Coordinate El Niño support",
+        "longDescription": "Find community support, practical resources, and shared preparation plans for El Niño impacts. Share an offer or request, coordinate local work, and manage your own contributions. Information from community members may be unverified; check local authorities before acting.",
+        "developerName": "Thrivbe",
+        "category": "Productivity",
+        "capabilities": [
+          "Search community information",
+          "Share community contributions",
+          "Manage your own contributions"
+        ],
+        "websiteURL": "https://super-el-nino.vibethrivbe.chatgpt.site/",
+        "defaultPrompt": [
+          "Find community support, resources, and preparation plans near me.",
+          "Help me share an offer of skills, time, or supplies for El Niño preparation.",
+          "Show my Super El Nino contributions and help me update one."
+        ],
+        "brandColor": "#176B87",
+        "brandColorDark": "#6CC4E2",
+        "composerIcon": "./assets/composer-icon.svg",
+        "logo": "./assets/logo.svg"
+      },
+      "onboardingSkill": "./skills/get-started/SKILL.md"
+    }
+  }
+}
