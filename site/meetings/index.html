@@ -49,23 +49,34 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-off
 /* side menu: wrapping chip bar on phones, sticky left column on wide screens */
 .side{background:var(--surface);border-bottom:1px solid var(--line);padding-inline:16px;padding-block:.75rem}
 .side-title{font:700 1rem var(--display);margin-bottom:.5rem}
+/* tabs = .grp; phones show tab chips only, wide screens show the open tab's sections under it */
 nav{display:flex;flex-wrap:wrap;gap:.35rem}
-nav .grp{display:none}
-nav a{font:600 .78rem var(--mono);text-decoration:none;color:var(--fg);border:1px solid var(--line);padding:.25rem .55rem;border-radius:4px}
+nav .sub{display:none}
+nav a{font:600 .78rem var(--mono);text-decoration:none;color:var(--fg);border:1px solid var(--line);padding:.3rem .6rem;border-radius:4px}
 nav a:hover{border-color:var(--accent)}
-nav a.on{color:var(--accent);border-color:var(--accent)}
+nav .grp.active > .tabbtn{background:var(--accent);border-color:var(--accent);color:#fff}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(14rem,1fr));gap:.75rem;margin-top:.75rem}
+.card{display:block;text-decoration:none;color:var(--fg);background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:.9rem 1rem}
+.card:hover{border-color:var(--accent)}
+.card b{display:block;font:700 1.05rem var(--display);margin-bottom:.2rem}
+.card span{font-size:.88rem;color:var(--muted)}
+.pager{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-top:3rem;padding-top:1.25rem;border-top:1px solid var(--line)}
+.pager a{font:600 .9rem var(--body);text-decoration:none;color:var(--fg);border:1px solid var(--line);border-radius:6px;padding:.55rem .9rem;background:var(--surface)}
+.pager a:hover{border-color:var(--accent)}
 html{scroll-behavior:smooth} section,header{scroll-margin-top:1rem}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 @media (min-width:60rem){
   .layout{display:grid;grid-template-columns:15rem minmax(0,1fr)}
   .side{position:sticky;top:env(safe-area-inset-top,0px);height:100vh;overflow-y:auto;border-bottom:0;border-right:1px solid var(--line);padding-block:2rem;box-sizing:border-box}
   .side-title{margin-bottom:1rem}
-  nav{flex-direction:column;flex-wrap:nowrap;gap:.1rem}
-  nav .grp{display:block;font:600 .68rem var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:1rem 0 .3rem}
-  nav .grp:first-child{margin-top:0}
-  nav a{border:0;border-left:2px solid transparent;border-radius:0;padding:.3rem .6rem;font:400 .9rem var(--body)}
-  nav a:hover{border-left-color:var(--line);background:var(--bg)}
-  nav a.on{border-left-color:var(--accent);background:var(--accent-soft);color:var(--fg);font-weight:600}
+  nav{flex-direction:column;flex-wrap:nowrap;gap:.15rem}
+  nav .tabbtn{display:block;border:0;border-radius:4px;padding:.5rem .65rem;font:600 .95rem var(--body)}
+  nav .tabbtn:hover{background:var(--bg)}
+  nav .grp.active > .tabbtn{background:var(--accent-soft);color:var(--fg)}
+  nav .grp.active .sub{display:flex;flex-direction:column;margin:.2rem 0 .6rem .65rem;border-left:1px solid var(--line)}
+  nav .sub a{border:0;border-left:2px solid transparent;margin-left:-1px;border-radius:0;padding:.28rem .7rem;font:400 .87rem var(--body);color:var(--muted)}
+  nav .sub a:hover{color:var(--fg)}
+  nav .sub a.on{border-left-color:var(--accent);color:var(--fg);font-weight:600}
 }
 
 /* anomaly scale */

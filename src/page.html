@@ -39,23 +39,34 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-off
 /* side menu: wrapping chip bar on phones, sticky left column on wide screens */
 .side{background:var(--surface);border-bottom:1px solid var(--line);padding-inline:16px;padding-block:.75rem}
 .side-title{font:700 1rem var(--display);margin-bottom:.5rem}
+/* tabs = .grp; phones show tab chips only, wide screens show the open tab's sections under it */
 nav{display:flex;flex-wrap:wrap;gap:.35rem}
-nav .grp{display:none}
-nav a{font:600 .78rem var(--mono);text-decoration:none;color:var(--fg);border:1px solid var(--line);padding:.25rem .55rem;border-radius:4px}
+nav .sub{display:none}
+nav a{font:600 .78rem var(--mono);text-decoration:none;color:var(--fg);border:1px solid var(--line);padding:.3rem .6rem;border-radius:4px}
 nav a:hover{border-color:var(--accent)}
-nav a.on{color:var(--accent);border-color:var(--accent)}
-html{scroll-behavior:smooth} section,header{scroll-margin-top:1rem}
-@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+nav .grp.active > .tabbtn{background:var(--accent);border-color:var(--accent);color:#fff}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(14rem,1fr));gap:.75rem;margin-top:.75rem}
+.card{display:block;text-decoration:none;color:var(--fg);background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:.9rem 1rem}
+.card:hover{border-color:var(--accent)}
+.card b{display:block;font:700 1.05rem var(--display);margin-bottom:.2rem}
+.card span{font-size:.88rem;color:var(--muted)}
+.pager{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-top:3rem;padding-top:1.25rem;border-top:1px solid var(--line)}
+.pager a{font:600 .9rem var(--body);text-decoration:none;color:var(--fg);border:1px solid var(--line);border-radius:6px;padding:.55rem .9rem;background:var(--surface)}
+.pager a:hover{border-color:var(--accent)}
+section,header{scroll-margin-top:1rem}
+body{overflow-anchor:none} /* tabs hide content above the viewport; don't let the browser "keep position" */
 @media (min-width:60rem){
   .layout{display:grid;grid-template-columns:15rem minmax(0,1fr)}
   .side{position:sticky;top:env(safe-area-inset-top,0px);height:100vh;overflow-y:auto;border-bottom:0;border-right:1px solid var(--line);padding-block:2rem;box-sizing:border-box}
   .side-title{margin-bottom:1rem}
-  nav{flex-direction:column;flex-wrap:nowrap;gap:.1rem}
-  nav .grp{display:block;font:600 .68rem var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:1rem 0 .3rem}
-  nav .grp:first-child{margin-top:0}
-  nav a{border:0;border-left:2px solid transparent;border-radius:0;padding:.3rem .6rem;font:400 .9rem var(--body)}
-  nav a:hover{border-left-color:var(--line);background:var(--bg)}
-  nav a.on{border-left-color:var(--accent);background:var(--accent-soft);color:var(--fg);font-weight:600}
+  nav{flex-direction:column;flex-wrap:nowrap;gap:.15rem}
+  nav .tabbtn{display:block;border:0;border-radius:4px;padding:.5rem .65rem;font:600 .95rem var(--body)}
+  nav .tabbtn:hover{background:var(--bg)}
+  nav .grp.active > .tabbtn{background:var(--accent-soft);color:var(--fg)}
+  nav .grp.active .sub{display:flex;flex-direction:column;margin:.2rem 0 .6rem .65rem;border-left:1px solid var(--line)}
+  nav .sub a{border:0;border-left:2px solid transparent;margin-left:-1px;border-radius:0;padding:.28rem .7rem;font:400 .87rem var(--body);color:var(--muted)}
+  nav .sub a:hover{color:var(--fg)}
+  nav .sub a.on{border-left-color:var(--accent);color:var(--fg);font-weight:600}
 }
 
 /* anomaly scale */
@@ -138,19 +149,24 @@ pre.tree{background:var(--surface);border:1px solid var(--line);border-radius:6p
 <aside class="side">
   <div class="side-title">El Niño 2026–27</div>
   <nav aria-label="Sections">
-    <span class="grp">Situation</span>
-    <a href="#now">Now</a><a href="#money">Money</a>
-    <span class="grp">Regions</span>
-    <a href="#latam">Latin America</a><a href="#africa">Africa</a><a href="#asia">Asia</a><a href="#pacific">Pacific</a>
-    <span class="grp">Insight</span>
-    <a href="#forgotten">Forgotten impacts</a><a href="#lessons">Lessons</a><a href="#unknowns">Unknown unknowns</a><a href="#gap">Warning → action</a>
-    <span class="grp">Our role</span>
-    <a href="#value">How we help</a><a href="#map">Coordination map</a><a href="#openlayer">Open map &amp; agent layer</a><a href="#plugin">AI plugin &amp; shared index</a><a href="#build">Build ideas &amp; repo</a><a href="#github">Open-source code</a><a href="#burners">Burners</a><a href="#meetings">Meetings</a><a href="#contacts">Who to call</a><a href="#dates">Dates</a><a href="#prompt">Research prompt</a><a href="#sources">Sources &amp; more research</a>
+    <div class="grp active" data-tab="start"><a class="tabbtn" href="#start">Start here</a></div>
+    <div class="grp" data-tab="situation"><a class="tabbtn" href="#situation">Situation</a>
+      <div class="sub"><a href="#now">Now</a><a href="#money">Money</a></div></div>
+    <div class="grp" data-tab="regions"><a class="tabbtn" href="#regions">Regions</a>
+      <div class="sub"><a href="#latam">Latin America</a><a href="#africa">Africa</a><a href="#asia">Asia</a><a href="#pacific">Pacific</a></div></div>
+    <div class="grp" data-tab="insight"><a class="tabbtn" href="#insight">Insight</a>
+      <div class="sub"><a href="#forgotten">Forgotten impacts</a><a href="#lessons">Lessons</a><a href="#unknowns">Unknown unknowns</a><a href="#gap">Warning → action</a></div></div>
+    <div class="grp" data-tab="ideas"><a class="tabbtn" href="#ideas">Our ideas</a>
+      <div class="sub"><a href="#value">How we help</a><a href="#map">Coordination map</a><a href="#openlayer">Open map &amp; agent layer</a><a href="#plugin">AI plugin &amp; shared index</a><a href="#build">Build ideas &amp; repo</a><a href="#github">Open-source code</a><a href="#burners">Burners</a></div></div>
+    <div class="grp" data-tab="people"><a class="tabbtn" href="#people">People &amp; meetings</a>
+      <div class="sub"><a href="#meetings">Meetings</a><a href="#contacts">Who to call</a><a href="#dates">Dates</a></div></div>
+    <div class="grp" data-tab="resources"><a class="tabbtn" href="#resources">Resources</a>
+      <div class="sub"><a href="#prompt">Research prompt</a><a href="#sources">Sources &amp; more research</a></div></div>
   </nav>
 </aside>
 <div class="wrap">
 <header>
-  <div class="eyebrow">Situation overview · as of 2 October 2026 · v4</div>
+  <div class="eyebrow">Situation overview · as of 2 October 2026 · v5</div>
   <h1>El Niño 2026–27 Watch</h1>
   <p class="lede">Who is preparing, where, with what money, what is missing, and how a small group can help. Built from parallel research passes over 2026 sources, blended with the group's El Niño Research Plan (items tagged <span class="rp">RP</span>).</p>
   <div class="eeaao" aria-label="Everything everywhere all at once">
@@ -178,6 +194,34 @@ pre.tree{background:var(--surface);border:1px solid var(--line);border-radius:6p
     <div class="legend"><span>Black: observed (NOAA monthly; weekly peak from the Research Plan)</span><span>Grey: past record events (peak ONI)</span><span style="color:var(--accent)">Orange: forecast model mean</span></div>
   </div>
 </header>
+
+<section id="start">
+  <h2>Start here</h2>
+  <h3>Five things to know</h3>
+  <ol class="rank">
+    <li><div><b>It is big and it is now</b><p>A very strong El Niño, likely the strongest on record. Peak October–December 2026, lasting into early 2027.</p></div></li>
+    <li><div><b>Same event, opposite problems</b><p>Drought in Southern Africa, Central America, Southeast Asia and the Pacific. Floods on the Peru–Ecuador coast and in East Africa.</p></div></li>
+    <li><div><b>Plans exist, money does not</b><p>Many appeals are 55–80% unfunded. Local groups get money 3–6 months late, through middlemen.</p></div></li>
+    <li><div><b>The real gap is the last step</b><p>Forecasts are good. Warnings fail to become decisions by a named person in a district or village, in their language, in time.</p></div></li>
+    <li><div><b>Where we fit</b><p>Facilitation, local-language translation, matchmaking needs with offers, and moving Nordic money to local groups. Norad's new civil society grants open for feedback in December.</p></div></li>
+  </ol>
+  <h3>What we do next</h3>
+  <ul class="tight">
+    <li>Pick one region to focus on.</li>
+    <li>Register for the Global Dialogue Platform, 20–22 Oct (free online).</li>
+    <li>Send the "7-day introduction" offer to the first 50 local groups and partners.</li>
+    <li>Prepare input for Norad's grant consultation (December 2026).</li>
+  </ul>
+  <h3>Find your way</h3>
+  <div class="cards">
+    <a class="card" href="#situation"><b>Situation</b><span>Forecast numbers and all the money</span></a>
+    <a class="card" href="#regions"><b>Regions</b><span>Who is acting where, and what is missing</span></a>
+    <a class="card" href="#insight"><b>Insight</b><span>Forgotten impacts, lessons, blind spots, warning → action</span></a>
+    <a class="card" href="#ideas"><b>Our ideas</b><span>How we help, map, plugin, build plan, code, Burners</span></a>
+    <a class="card" href="#people"><b>People &amp; meetings</b><span>Transcripts, contacts, key dates</span></a>
+    <a class="card" href="#resources"><b>Resources</b><span>Research prompt, sources, more reading</span></a>
+  </div>
+</section>
 
 <section id="now">
   <h2>What is happening now</h2>
@@ -2126,8 +2170,8 @@ We are a small group based in Norway. Our skills: tech and AI, facilitation, com
   </div>
 </section>
 
-<footer>
-  <h2 id="sources">Sources and limits</h2>
+<section id="sources">
+  <h2>Sources and limits</h2>
   <p class="note">Compiled 1 Oct 2026 from 2026 sources: NOAA CPC (10 Sep), WMO (3 Sep), ICPAC GHACOF-74, SARCOF-33, OCHA ROSEA alert, FAO–WFP appeal, UNICEF, IFRC / Climate Centre (28 Sep), Anticipation Hub, Norad, national agencies and press in Spanish, Portuguese, French and English. Some pages (OCHA, BoM) blocked direct access, so those figures come from press summaries. Ecuador's $649M plan and Peru's S/8.2bn bill are reported, not confirmed. Treat figures as leads to verify before quoting.</p>
   <h3>Research Plan sources <span class="rp">RP</span></h3>
   <p class="note">Items tagged <span class="rp">RP</span> come from the "Global Climate Risk Assessment and Operational Response Framework for the 2026–2027 El Niño Event" (the group's El Niño Research Plan, Oct 2026). Its 59 cited sources are below. A few figures were cut off in the file (a Guatemala commitment, one UN appeal amount) and are left out. Figures not cross-checked.</p>
@@ -2210,15 +2254,75 @@ We are a small group based in Norway. Our skills: tech and AI, facilitation, com
     <li>Collective intelligence example: <a href="https://default.no/map.php">crowd-built clue map</a> and <a href="https://default.no/">open data</a> from a Norwegian mass search game.</li>
     <li><a href="https://mutualaidla.org/">Mutual Aid LA Network</a>. A connector and information hub for mutual aid groups across Los Angeles. A working example of the needs/offers matchmaking idea at city scale.</li>
   </ul>
-</footer>
+</section>
 </div>
 </div>
 
 <script>
+// tabs: show one group of sections at a time; deep links (#section or #tab) open the right tab
+(function () {
+  var TABS = [
+    { id: "start", label: "Start here", secs: ["start"] },
+    { id: "situation", label: "Situation", secs: ["now", "money"] },
+    { id: "regions", label: "Regions", secs: ["latam", "africa", "asia", "pacific"] },
+    { id: "insight", label: "Insight", secs: ["forgotten", "lessons", "unknowns", "gap"] },
+    { id: "ideas", label: "Our ideas", secs: ["value", "map", "openlayer", "plugin", "build", "github", "burners"] },
+    { id: "people", label: "People & meetings", secs: ["meetings", "contacts", "dates"] },
+    { id: "resources", label: "Resources", secs: ["prompt", "sources"] }
+  ];
+  var secTab = {}, groups = {};
+  TABS.forEach(function (t) { t.secs.forEach(function (s) { secTab[s] = t.id; }); });
+  document.querySelectorAll("nav .grp").forEach(function (g) { groups[g.dataset.tab] = g; });
+  var header = document.querySelector(".wrap > header");
+  var smooth = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  TABS.forEach(function (t, i) { // prev / next links at the end of each tab
+    var last = document.getElementById(t.secs[t.secs.length - 1]);
+    if (!last) return;
+    var p = document.createElement("div"), prev = TABS[i - 1], next = TABS[i + 1];
+    p.className = "pager"; p.dataset.tab = t.id;
+    p.innerHTML = (prev ? '<a href="#' + prev.id + '">← ' + prev.label + "</a>" : "<span></span>") +
+                  (next ? '<a href="#' + next.id + '">' + next.label + " →</a>" : "");
+    last.after(p);
+  });
+
+  function show(tab) {
+    TABS.forEach(function (t) {
+      var on = t.id === tab;
+      t.secs.forEach(function (s) { var el = document.getElementById(s); if (el) el.hidden = !on; });
+      var pg = document.querySelector('.pager[data-tab="' + t.id + '"]');
+      if (pg) pg.hidden = !on;
+      if (groups[t.id]) groups[t.id].classList.toggle("active", on);
+    });
+    if (header) header.hidden = tab !== "start";
+  }
+
+  function go(id, animate) {
+    var isTab = TABS.some(function (t) { return t.id === id; });
+    var tab = isTab ? id : secTab[id];
+    if (!tab) return false;
+    show(tab);
+    // "instant", not "auto": auto would inherit CSS smooth scrolling and race the layout change
+    if (isTab) window.scrollTo({ top: 0, behavior: "instant" });
+    else document.getElementById(id).scrollIntoView({ behavior: animate && smooth ? "smooth" : "instant", block: "start" });
+    try { history.replaceState(null, "", "#" + id); } catch (e) {}
+    return true;
+  }
+
+  document.addEventListener("click", function (e) {
+    var a = e.target.closest('a[href^="#"]');
+    if (a && go(a.getAttribute("href").slice(1), true)) e.preventDefault();
+  });
+  if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+  if (!go(location.hash.slice(1), false)) show("start");
+  // the browser jumps to the #anchor again after fonts load, using the old (untabbed) layout
+  window.addEventListener("load", function () { setTimeout(function () { go(location.hash.slice(1), false); }, 60); });
+})();
+
 // highlight the side-menu link for the section in view
 (function () {
   var links = {};
-  document.querySelectorAll("nav a").forEach(function (a) { links[a.getAttribute("href").slice(1)] = a; });
+  document.querySelectorAll("nav .sub a").forEach(function (a) { links[a.getAttribute("href").slice(1)] = a; });
   if (!("IntersectionObserver" in window)) return;
   var io = new IntersectionObserver(function (entries) {
     entries.forEach(function (e) {
