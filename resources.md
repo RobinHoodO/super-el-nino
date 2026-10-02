@@ -4,6 +4,7 @@ Links from the "Super El Niño response" WhatsApp group (to 2026-10-01), sorted 
 
 ## Group knowledge base
 - [SENRI wiki: Understand El Niño](https://senri-wiki.netlify.app/understand/el-nino/) — the group's own wiki
+- [Super El Niño site (ChatGPT)](https://super-el-nino.vibethrivbe.chatgpt.site/) — companion site
 
 ## Situation and science
 - [‘Jaw-dropping’ El Niño bursts through temperature record months before peak](https://www.theguardian.com/environment/2026/sep/21/super-el-nino-temperature-record) — Guardian, 21 Sep 2026
