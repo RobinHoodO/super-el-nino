@@ -11,6 +11,7 @@ Links from the "Super El Niño response" WhatsApp group (to 2026-10-01), sorted 
 - [What is El Niño, what causes it and can we reduce the risks?](https://www.theguardian.com/environment/2026/sep/26/what-is-el-nino-causes-can-we-reduce-risks) — Guardian explainer, 26 Sep 2026
 - [Planetary Health Check](https://www.planetaryhealthcheck.org/) — planetary boundaries status
 - [This El Niño Is About To Cause a Global Catastrophe](https://www.youtube.com/watch?v=KxNHlkNuqG0) — video, The World, The Universe And Us
+- [ClimateWatch: El Niño strengthens, October update](https://www.youtube.com/watch?v=7oupDKBxs-I) — video, WeatherWatchTV
 
 ## Preparedness thinking and networks
 - [El Niño Ready Nations (ENRN)](https://elninoreadynations.com/enso-and-el-nino-ready-nations-enrn/) — framework for El Niño-ready countries
