@@ -12,6 +12,8 @@ Links from the "Super El Niño response" WhatsApp group (to 2026-10-01), sorted 
 - [Planetary Health Check](https://www.planetaryhealthcheck.org/) — planetary boundaries status
 - [This El Niño Is About To Cause a Global Catastrophe](https://www.youtube.com/watch?v=KxNHlkNuqG0) — video, The World, The Universe And Us
 - [ClimateWatch: El Niño strengthens, October update](https://www.youtube.com/watch?v=7oupDKBxs-I) — video, WeatherWatchTV
+- [Why El Niño 2026 has scientists worried](https://www.youtube.com/watch?v=Ou5wECGoStc) — video, BBC News · The Global Story
+- Transcripts of all three videos: `research/videos/` (fetched with `tools/yt_transcripts.py` via Apify)
 
 ## Preparedness thinking and networks
 - [El Niño Ready Nations (ENRN)](https://elninoreadynations.com/enso-and-el-nino-ready-nations-enrn/) — framework for El Niño-ready countries
