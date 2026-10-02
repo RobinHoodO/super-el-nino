@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """Render meeting transcripts (markdown, local-only folders) into the Meetings section of src/page.html.
 
-Summaries are public. Full transcripts are wrapped in PRIVATE markers: they stay on the
-private Claude artifact and in the private repo, and build.sh strips them from the public
-Vercel site until the group agrees to publish.
+Full transcripts are wrapped in PRIVATE markers. The Vercel site is password-protected
+(middleware.js), so build.sh includes them; if the password gate is ever removed, switch
+build.sh back to stripping the PRIVATE blocks.
 
 Run:  python3 tools/build_meetings.py && ./build.sh
 """
