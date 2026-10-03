@@ -4,3 +4,4 @@ fireflies/
 .DS_Store
 __pycache__/
 super-el-nino-plugin-*.zip
+.vercel

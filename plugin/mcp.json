@@ -3,7 +3,7 @@
   "mcpServers": {
     "super-el-nino": {
       "type": "streamable-http",
-      "url": "https://super-el-nino.vibethrivbe.chatgpt.site/mcp"
+      "url": "https://super-el-nino.vercel.app/mcp"
     }
   }
 }

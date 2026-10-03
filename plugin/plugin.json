@@ -1,13 +1,13 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "super-el-nino",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Community coordination for people preparing for, responding to, and recovering from El Niño impacts.",
   "author": {
     "name": "Thrivbe",
     "url": "https://github.com/RobinHoodO/super-el-nino"
   },
-  "homepage": "https://super-el-nino.vibethrivbe.chatgpt.site/",
+  "homepage": "https://super-el-nino.vercel.app/",
   "repository": "https://github.com/RobinHoodO/super-el-nino",
   "keywords": [
     "el-nino",
@@ -20,22 +20,22 @@
       "interface": {
         "displayName": "Super El Nino",
         "shortDescription": "Coordinate El Niño support",
-        "longDescription": "Find community support, practical resources, and shared preparation plans for El Niño impacts. Share an offer or request, coordinate local work, and manage your own contributions. Information from community members may be unverified; check local authorities before acting.",
+        "longDescription": "Find preparedness resources, safely draft community offers or needs, and create response-plan templates for El Niño impacts. Drafts and plans are not published or stored. Check current local authority guidance before acting.",
         "developerName": "Thrivbe",
         "category": "Productivity",
         "capabilities": [
-          "Search community information",
-          "Share community contributions",
-          "Manage your own contributions"
+          "Search preparedness resources",
+          "Draft community contributions",
+          "Create response plans"
         ],
-        "websiteURL": "https://super-el-nino.vibethrivbe.chatgpt.site/",
+        "websiteURL": "https://super-el-nino.vercel.app/",
         "supportURL": "https://www.thrivbe.com/",
         "privacyPolicyURL": "https://www.thrivbe.com/termsandconditionsprivacy",
         "termsOfServiceURL": "https://www.thrivbe.com/termsandconditionsprivacy",
         "defaultPrompt": [
-          "Find community support, resources, and preparation plans near me.",
-          "Help me share an offer of skills, time, or supplies for El Niño preparation.",
-          "Show my Super El Nino contributions and help me update one."
+          "Find El Niño preparedness resources for my region.",
+          "Help me draft a safe public offer of skills, time, or supplies for El Niño preparation.",
+          "Create a response-plan template for my community."
         ],
         "brandColor": "#176B87",
         "brandColorDark": "#6CC4E2",

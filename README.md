@@ -13,6 +13,8 @@ Research and tools for the Super El Niño Response group (SENRI): supporting com
 | `research/deep-research-prompt.md` | Prompt for deep research tools |
 | `resources.md` | Links shared in the group, sorted by topic |
 | `vercel.json` | Static deploy config (serves `site/`) |
+| `api/mcp.js` | Public MCP endpoint at `/mcp` for preparedness resources, safe contribution drafts, and response-plan templates |
+| `api/openai-apps-challenge.js` | OpenAI plugin domain-verification endpoint |
 
 ## Update the page
 1. Edit `src/page.html` (single source; also published as the Claude artifact https://claude.ai/artifact/11cWwKkrQaCNjXwaDCBhcn).
