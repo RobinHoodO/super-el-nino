@@ -22,6 +22,7 @@ const tools = [
   {
     name: 'search_preparedness_resources',
     description: 'Find reputable El Niño preparedness resources for a broad location and topic. This is not emergency dispatch or official local advice.',
+    annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false },
     inputSchema: {
       type: 'object',
       properties: {
@@ -35,6 +36,7 @@ const tools = [
   {
     name: 'draft_community_contribution',
     description: 'Prepare a safe public draft for an El Niño-related offer, need, resource, or update. It never publishes content or stores personal data.',
+    annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false },
     inputSchema: {
       type: 'object',
       properties: {
@@ -50,6 +52,7 @@ const tools = [
   {
     name: 'create_response_plan',
     description: 'Create a non-persistent, open response-project plan with practical next tasks for community coordination.',
+    annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false },
     inputSchema: {
       type: 'object',
       properties: {
@@ -64,6 +67,7 @@ const tools = [
   {
     name: 'list_research_resources',
     description: 'List the public research and preparedness resources included with Super El Nino.',
+    annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false },
     inputSchema: { type: 'object', properties: {}, additionalProperties: false },
   },
 ];
