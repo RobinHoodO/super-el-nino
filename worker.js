@@ -1,7 +1,8 @@
-// Password gate for /meetings only (Vercel Routing Middleware, free on any plan).
+// Cloudflare Worker: password gate for /meetings, plus /mcp and the OpenAI challenge.
+// Every other path is a plain static asset.
 // Password-only form, no username. A valid login sets an HttpOnly cookie for /meetings.
-// The password is the SITE_PASSWORD env var in Vercel; changing it logs everyone out.
-export const config = { matcher: ['/meetings', '/meetings/:path*'] };
+// The password is the SITE_PASSWORD Worker secret; changing it logs everyone out.
+import { handleMcp, handleChallenge } from './mcp.js';
 
 const COOKIE = 'senri_meetings';
 
@@ -11,7 +12,7 @@ async function token(pw) {
   return [...new Uint8Array(hash)].map((b) => b.toString(16).padStart(2, '0')).join('');
 }
 
-// Constant-time string compare (Edge runtime has no crypto.timingSafeEqual).
+// Constant-time string compare (plain JS, no dependency on crypto.timingSafeEqual).
 function safeEqual(a, b) {
   let diff = a.length ^ b.length;
   for (let i = 0; i < Math.max(a.length, b.length); i++) {
@@ -54,9 +55,13 @@ ${wrong ? '<p class="err" role="alert">Wrong password. Try again.</p>' : ''}
   });
 }
 
-export default async function middleware(request) {
-  const expected = process.env.SITE_PASSWORD;
-  if (!expected) return loginPage(false); // fail closed if the env var is missing
+async function handle(request, env) {
+  const { pathname } = new URL(request.url);
+  if (pathname === '/mcp') return handleMcp(request);
+  if (pathname === '/.well-known/openai-apps-challenge') return handleChallenge();
+
+  const expected = env.SITE_PASSWORD;
+  if (!expected) return loginPage(false); // fail closed if the secret is missing
   const url = new URL(request.url);
   const good = await token(expected);
 
@@ -74,6 +79,8 @@ export default async function middleware(request) {
     });
   }
 
-  if (safeEqual(cookieValue(request), good)) return; // logged in: serve the page
+  if (safeEqual(cookieValue(request), good)) return env.ASSETS.fetch(request); // logged in: serve the page
   return loginPage(url.searchParams.has('wrong'));
 }
+
+export default { fetch: handle };
