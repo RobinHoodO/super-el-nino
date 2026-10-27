@@ -3,7 +3,7 @@
   "mcpServers": {
     "super-el-nino": {
       "type": "streamable-http",
-      "url": "https://super-el-nino.vercel.app/mcp"
+      "url": "https://superelninomcp.thrivbe.com/mcp"
     }
   }
 }
