@@ -16,7 +16,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 PAGE = ROOT / "src/page.html"
 MEETINGS_PAGE = ROOT / "src/meetings.html"
-SITE_MEETINGS = "https://super-el-nino.vercel.app/meetings/"
+SITE_MEETINGS = "https://superelninomcp.thrivbe.com/meetings/"
 MEETINGS = [  # (id, title, date, source label, markdown file)
     ("m-2026-10-01", "Community Preparedness & Fundraising", "1 Oct 2026", "Fireflies, 66 min",
      ROOT / "fireflies/2026-10-01-super-el-nino-community-preparedness-fundraising.md"),

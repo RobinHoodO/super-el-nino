@@ -12,11 +12,8 @@ Research and tools for the Super El Niño Response group (SENRI): supporting com
 | `research/el-nino-research-plan.txt` | The group's El Niño Research Plan (full text; `.rtf` original alongside) |
 | `research/deep-research-prompt.md` | Prompt for deep research tools |
 | `resources.md` | Links shared in the group, sorted by topic |
-| `vercel.json` | Legacy Vercel config; keeps https://super-el-nino.vercel.app (and the `api/` functions) alive because `plugin/mcp.json` points there |
 | `wrangler.jsonc` | Workers config (serves `site/`, runs the Worker for `/meetings*`, `/mcp` and the OpenAI challenge) |
 | `mcp.js` | Native Worker port of the MCP endpoint at `/mcp` (Fetch API) |
-| `api/mcp.js` | Same MCP endpoint for the legacy Vercel deploy. Keep the tool list in sync with `mcp.js` |
-| `api/openai-apps-challenge.js` | OpenAI plugin domain-verification endpoint (Vercel copy; the Worker serves the same token) |
 
 ## Update the page
 1. Edit `src/page.html` (single source; also published as the Claude artifact https://claude.ai/artifact/11cWwKkrQaCNjXwaDCBhcn).
