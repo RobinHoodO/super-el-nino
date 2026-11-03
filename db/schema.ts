@@ -17,3 +17,7 @@ export const workItems=sqliteTable('work_items',{id:text('id').primaryKey(),kind
 export const workLinks=sqliteTable('work_links',{id:text('id').primaryKey(),fromId:text('from_id').notNull(),toId:text('to_id').notNull(),relation:text('relation').notNull(),createdBy:text('created_by').notNull()},t=>[uniqueIndex('work_link_unique').on(t.fromId,t.toId,t.relation)]);
 export const workSubscriptions=sqliteTable('work_subscriptions',{id:text('id').primaryKey(),itemId:text('item_id').notNull(),userId:text('user_id').notNull()},t=>[uniqueIndex('work_subscription_unique').on(t.itemId,t.userId)]);
 export const workActivity=sqliteTable('work_activity',{id:text('id').primaryKey(),itemId:text('item_id').notNull(),actorName:text('actor_name').notNull(),action:text('action').notNull(),createdAt:text('created_at').notNull()});
+
+export const authUsers=sqliteTable('auth_users',{id:text('id').primaryKey(),email:text('email').notNull().unique(),passwordHash:text('password_hash').notNull(),createdAt:integer('created_at').notNull()});
+export const authSessions=sqliteTable('auth_sessions',{tokenHash:text('token_hash').primaryKey(),userId:text('user_id').notNull().references(()=>authUsers.id,{onDelete:'cascade'}),expiresAt:integer('expires_at').notNull()},t=>[index('auth_session_user').on(t.userId),index('auth_session_expiry').on(t.expiresAt)]);
+export const authAttempts=sqliteTable('auth_attempts',{key:text('key').primaryKey(),attempts:integer('attempts').notNull(),expiresAt:integer('expires_at').notNull()},t=>[index('auth_attempt_expiry').on(t.expiresAt)]);

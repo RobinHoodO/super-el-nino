@@ -1,0 +1,17 @@
+# yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
+inheritance: false
+language: en-US
+reviews:
+  profile: chill
+  request_changes_workflow: false
+  poem: false
+  auto_review:
+    enabled: true
+    drafts: false
+    auto_incremental_review: false
+  path_filters:
+    - '!vendor/**'
+    - '!public/**'
+    - '!**/*lock*'
+    - '!drizzle/meta/**'
+    - '!**/*.md'

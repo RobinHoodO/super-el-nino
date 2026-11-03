@@ -36,6 +36,13 @@
       "when": 1790885146911,
       "tag": "0004_concerned_stark_industries",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "6",
+      "when": 1793725510375,
+      "tag": "0005_native_auth",
+      "breakpoints": true
     }
   ]
 }

@@ -1,6 +1,6 @@
 # Super El Nino source and hosting
 
-The website currently runs on ChatGPT Sites. The source can be maintained in a separate GitHub repository. GitHub contains application code and immutable schema migrations, not the live database or secrets.
+The canonical authenticated website runs on the Cloudflare Worker. See [native account security, migration and rollback](NATIVE_AUTH.md). The older ChatGPT Sites deployment is maintained separately. The source can be maintained in a separate GitHub repository. GitHub contains application code and immutable schema migrations, not the live database or secrets.
 
 ## Checks
 
@@ -18,7 +18,7 @@ Deploy the checked-out source with Node 22+, after building it, through the Thri
 oprun --env-file /Users/robinsverd/Thrivbe-AI/Thrivbe-OS/.env -- pnpm deploy:cloudflare
 ```
 
-The Cloudflare wrapper strips ChatGPT Sites identity headers before the app sees a request. This prevents browser clients from spoofing a user identity, but it means the copied public deployment is read-only until a Cloudflare-native authentication system is configured. Never accept those headers directly from browser clients. Configure secrets in the deployment provider rather than committing them. Retain the Osiris MIT license and GeoNames attribution.
+The Cloudflare wrapper strips ChatGPT Sites identity headers before the app sees a request. This prevents browser clients from spoofing a user identity, and the app now authenticates ordinary email/password accounts using server-side D1 sessions. Never accept those headers directly from browser clients. Configure secrets in the deployment provider rather than committing them. Retain the Osiris MIT license and GeoNames attribution.
 
 ## Map contribution flow
 

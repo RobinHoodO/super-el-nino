@@ -1,4 +1,16 @@
-# vinext-starter
+# Super El Nino
+
+Community preparation, response and recovery at https://super-el-nino.thrivbe.workers.dev.
+Native email/password accounts support contributions, collaboration and private
+messages. See [account security, deployment and rollback](docs/NATIVE_AUTH.md)
+and [source/hosting notes](docs/GITHUB_SETUP.md).
+
+Run `pnpm install --frozen-lockfile`, `pnpm test`, `pnpm lint`,
+`node scripts/prepare-map-worker.mjs`, `pnpm build`, then `pnpm typecheck`.
+
+The following starter notes describe the original framework setup. Dispatch-owned
+ChatGPT auth helpers are unused by the native app. The managed Sites copy is a
+separate deployment; new native accounts do not inherit its identities or roles.
 
 A clean full-stack starter running on [vinext](https://github.com/cloudflare/vinext), with optional Cloudflare D1 and Drizzle support.
 

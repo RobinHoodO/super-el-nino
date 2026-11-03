@@ -1,4 +1,4 @@
 import {DatabaseSync} from 'node:sqlite';
 export const sqlite=new DatabaseSync(':memory:');
 class Prepared{constructor(public sql:string,public values:unknown[]=[]){}bind(...values:unknown[]){return new Prepared(this.sql,values);}async all(){return {results:sqlite.prepare(this.sql).all(...this.values as (string|number|null)[])};}async first(){return sqlite.prepare(this.sql).get(...this.values as (string|number|null)[])??null;}async run(){return sqlite.prepare(this.sql).run(...this.values as (string|number|null)[]);}}
-export const env={ADMIN_EMAIL:'owner@example.test',DB:{prepare(sql:string){return new Prepared(sql);},async batch(statements:Prepared[]){sqlite.exec('BEGIN');try{const r=[];for(const s of statements)r.push(await s.run());sqlite.exec('COMMIT');return r;}catch(e){sqlite.exec('ROLLBACK');throw e;}}}};
+export const env={ADMIN_EMAIL:'owner@example.test',DB:{prepare(sql:string){return new Prepared(sql);},async batch(statements:Prepared[]){sqlite.exec('BEGIN');try{const r=[];for(const s of statements)r.push(await s.all());sqlite.exec('COMMIT');return r;}catch(e){sqlite.exec('ROLLBACK');throw e;}}}};

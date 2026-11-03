@@ -1,10 +1,11 @@
 import {env} from 'cloudflare:workers';
 import {z} from 'zod';
+import {sessionUser} from './auth';
 import {db,now,visibleEntry,list} from './data';
-export type Actor={id:string;email:string};
-export function actor(req:Request):Actor|null{const id=req.headers.get('oai-authenticated-user-id'),email=req.headers.get('oai-authenticated-user-email');return id&&email?{id,email}:null;}
-export function isOwner(a:Actor|null){return !!a&&!!env.ADMIN_EMAIL&&a.email.toLowerCase()===env.ADMIN_EMAIL.toLowerCase();}
-export async function isAdmin(a:Actor|null){if(!a)return false;if(isOwner(a))return true;return !!await db().prepare('SELECT email FROM administrators WHERE email=?').bind(a.email.toLowerCase()).first();}
+export type Actor={id:string;email:string;emailVerified?:boolean};
+export async function actor(req:Request):Promise<Actor|null>{return sessionUser(req);}
+export function isOwner(a:Actor|null){return !!a&&a.emailVerified===true&&!!env.ADMIN_EMAIL&&a.email.toLowerCase()===env.ADMIN_EMAIL.toLowerCase();}
+export async function isAdmin(a:Actor|null){if(!a||a.emailVerified!==true)return false;if(isOwner(a))return true;return !!await db().prepare('SELECT email FROM administrators WHERE email=?').bind(a.email.toLowerCase()).first();}
 export async function requireAdmin(a:Actor){if(!await isAdmin(a))throw new Error('Administrator access required');}
 const short=z.string().trim().min(2).max(100);
 async function messageById(user:string,id:string){const m=await db().prepare('SELECT * FROM messages WHERE id=? AND (sender_id=? OR recipient_id=?)').bind(id,user,user).first<Record<string,string>>();if(!m)throw new Error('Message unavailable');return m;}
