@@ -85,3 +85,13 @@ oprun --env-file /Users/robinsverd/Thrivbe-AI/Thrivbe-OS/.env -- node node_modul
 
 If that version is unavailable, redeploy source `428325f` from a clean checkout
 using the same D1 binding. Do not revert main or apply destructive schema SQL.
+
+## Hosting target
+
+`vercel.json` sets the supported `git.deploymentEnabled: false` option because
+this Vinext/D1 service is deployed to Cloudflare. The old Vercel Git integration
+expected a static `site` output directory and failed after a successful build.
+Git-triggered Vercel deployments are explicitly disabled rather than publishing
+an incomplete static copy or changing integration permissions. This does not
+remove any existing deployment. [Vercel Git configuration](https://vercel.com/docs/project-configuration/git-configuration)
+documents the option; Cloudflare build/tests remain mandatory in CI.
