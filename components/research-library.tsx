@@ -52,34 +52,54 @@ export default function ResearchLibrary() {
         </p>
       </div>
 
-      <div className="research-grid">
-        {primaryReading.map(({ title, description, href, icon: Icon }) => (
-          <a className="research-card" href={href} target="_blank" rel="noreferrer" key={href}>
-            <Icon size={22} aria-hidden="true" />
-            <div>
-              <h3>{title}</h3>
-              <p>{description}</p>
-            </div>
-            <ExternalLink size={17} aria-label={`Open ${title}`} />
-          </a>
-        ))}
-      </div>
+      <div className="research-split">
+        <div className="research-catalogue">
+          <div className="research-grid">
+            {primaryReading.map(({ title, description, href, icon: Icon }) => (
+              <a className="research-card" href={href} target="research-viewer" key={href}>
+                <Icon size={22} aria-hidden="true" />
+                <div>
+                  <h3>{title}</h3>
+                  <p>{description}</p>
+                </div>
+                <ExternalLink size={17} aria-label={`Read ${title}`} />
+              </a>
+            ))}
+          </div>
 
-      <section className="video-briefs" aria-labelledby="video-briefs-title">
-        <h3 id="video-briefs-title">Video research briefs</h3>
-        <div className="research-grid">
-          {videoBriefs.map(([title, source, filename]) => (
-            <a className="research-card" href={`${archive}videos/${filename}`} target="_blank" rel="noreferrer" key={filename}>
-              <PlayCircle size={22} aria-hidden="true" />
-              <div>
-                <h3>{title}</h3>
-                <p>{source} · preserved transcript and notes</p>
-              </div>
-              <ExternalLink size={17} aria-label={`Open ${title}`} />
-            </a>
-          ))}
+          <section className="video-briefs" aria-labelledby="video-briefs-title">
+            <h3 id="video-briefs-title">Video research briefs</h3>
+            <div className="research-grid">
+              {videoBriefs.map(([title, source, filename]) => (
+                <a className="research-card" href={`${archive}videos/${filename}`} target="research-viewer" key={filename}>
+                  <PlayCircle size={22} aria-hidden="true" />
+                  <div>
+                    <h3>{title}</h3>
+                    <p>{source} · preserved transcript and notes</p>
+                  </div>
+                  <ExternalLink size={17} aria-label={`Read ${title}`} />
+                </a>
+              ))}
+            </div>
+          </section>
         </div>
-      </section>
+
+        <aside className="research-viewer" aria-label="Research reader">
+          <div className="research-viewer-heading">
+            <div>
+              <span className="section-kicker">Reader</span>
+              <h3>El Niño 2026–27 Watch</h3>
+            </div>
+            <a href={`${archive}legacy-overview.html`} target="_blank" rel="noreferrer">Open separately <ExternalLink size={15} /></a>
+          </div>
+          <iframe
+            className="research-frame"
+            name="research-viewer"
+            title="El Niño 2026–27 Watch research"
+            src={`${archive}legacy-overview.html`}
+          />
+        </aside>
+      </div>
     </section>
   );
 }
