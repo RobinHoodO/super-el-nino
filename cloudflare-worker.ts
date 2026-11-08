@@ -1,4 +1,5 @@
 import application from "./dist/server/index.js";
+import { redirectLegacyResearch } from "./lib/research-redirect";
 
 // These headers are injected by ChatGPT Sites. They must never be trusted when
 // the same app runs behind a public Cloudflare Worker, where a browser could
@@ -12,6 +13,9 @@ const chatGptIdentityHeaders = [
 
 export default {
   fetch(request: Request, env: Cloudflare.Env, ctx: ExecutionContext) {
+    const researchRedirect = redirectLegacyResearch(request);
+    if (researchRedirect) return researchRedirect;
+
     const headers = new Headers(request.headers);
     for (const header of chatGptIdentityHeaders) headers.delete(header);
 

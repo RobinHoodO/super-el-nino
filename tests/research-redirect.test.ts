@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import {existsSync,readFileSync} from 'node:fs';
 import {GET} from '../app/research/[[...path]]/route';
+import {redirectLegacyResearch} from '../lib/research-redirect';
 
 const canonical='https://citizen-infra.github.io/senri/el-nino/research-library/';
 const legacyPaths=[
@@ -11,10 +12,18 @@ const legacyPaths=[
 ];
 
 for(const path of legacyPaths){
-  const response=await GET();
+  const response=await GET(new Request('https://example.test'+path));
   assert.equal(response.status,308,path+' must redirect permanently');
   assert.equal(response.headers.get('location'),canonical,path+' must use the canonical library');
 }
+
+for(const path of [...legacyPaths,'/research/','/research/videos/']){
+  const response=redirectLegacyResearch(new Request('https://example.test'+path));
+  assert.equal(response?.status,308,path+' must bypass framework path normalization');
+  assert.equal(response?.headers.get('location'),canonical,path+' must redirect directly to the canonical library');
+}
+assert.equal(redirectLegacyResearch(new Request('https://example.test/researcher')),null,'Only /research routes may redirect');
+assert.equal(redirectLegacyResearch(new Request('https://example.test/research',{method:'POST',body:'private'})),null,'Non-read requests must not be redirected across origins');
 
 const hub=readFileSync('app/hub.tsx','utf8');
 const researchLinks=hub.match(/<a[^>]*href=\{RESEARCH_LIBRARY_URL\}[^>]*>/g)??[];
