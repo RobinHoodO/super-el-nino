@@ -26,7 +26,8 @@ assert.equal(redirectLegacyResearch(new Request('https://example.test/researcher
 assert.equal(redirectLegacyResearch(new Request('https://example.test/research',{method:'POST',body:'private'})),null,'Non-read requests must not be redirected across origins');
 
 const hub=readFileSync('app/hub.tsx','utf8');
-const researchLinks=hub.match(/<a[^>]*href=\{RESEARCH_LIBRARY_URL\}[^>]*>/g)??[];
+const anchorOpenings=hub.match(/<a(?:[^>{]|\{(?:[^{}]|\{[^{}]*\})*\})*>/g)??[];
+const researchLinks=anchorOpenings.filter(link=>link.includes('href={RESEARCH_LIBRARY_URL}'));
 assert.equal(researchLinks.length,2,'Desktop and mobile Research controls must both be links');
 assert.ok(researchLinks.every(link=>!link.includes('target=')),'Research links must use same-tab navigation');
 assert.ok(!hub.includes('ResearchLibrary'),'The legacy ResearchLibrary component must not ship in Hub');
